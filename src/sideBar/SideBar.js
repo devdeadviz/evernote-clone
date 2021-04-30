@@ -27,7 +27,7 @@ const SideBar = ({ notes, classes, selectedNoteIndex }) => {
   };
 
   const deleteNote = (e) => {
-    if (alert(`Are you sure you want to delete: ${e.title}`)) {
+    if (window.confirm(`Are you sure you want to delete: ${e.title}`)) {
       console.log("Delete note");
     }
   };
@@ -69,7 +69,7 @@ const SideBar = ({ notes, classes, selectedNoteIndex }) => {
       </div>
     );
   } else {
-    <div></div>;
+    return <div></div>;
   }
 };
 

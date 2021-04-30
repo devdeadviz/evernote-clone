@@ -42,7 +42,7 @@ const SideBarItem = ({
         </div>
         <DeleteIcon
           className={classes.deleteIcon}
-          onClick={deleteNote(_note)}
+          onClick={() => deleteNote(_note)}
         ></DeleteIcon>
       </ListItem>
     </div>
