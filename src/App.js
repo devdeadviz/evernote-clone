@@ -8,6 +8,31 @@ const App = () => {
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
   const [notes, setNotes] = useState(null);
+  const [addingNote, setAddingNote] = useState(false);
+  const [title, setTitle] = useState(null);
+  const [text, setText] = useState(null);
+  const [id, setId] = useState(null);
+
+  // n -> note, i -> index
+  const selectNote = (n, i) => {
+    setSelectedNote(n);
+    setSelectedNoteIndex(i);
+  };
+
+  // e -> note
+  const deleteNote = (e) => {
+    if (window.confirm(`Are you sure you want to delete: ${e.title}`)) {
+      console.log("Delete note");
+    }
+  };
+
+  const newNote = () => {
+    console.log(addingNote, title);
+  };
+
+  const noteUpdate = (id, noteObj) => {
+    console.log(id, noteObj);
+  };
 
   useEffect(() => {
     firebase
@@ -27,15 +52,34 @@ const App = () => {
 
   return (
     <div className="App">
-      <SideBar notes={notes} selectedNoteIndex={selectedNoteIndex} />
-      <Editor
+      <SideBar
         notes={notes}
-        setNotes={setNotes}
-        selectedNote={selectedNote}
-        setSelectedNote={setSelectedNote}
         selectedNoteIndex={selectedNoteIndex}
-        setSelectedNoteIndex={setSelectedNoteIndex}
+        selectNote={selectNote}
+        deleteNote={deleteNote}
+        newNote={newNote}
+        addingNote={addingNote}
+        setAddingNote={setAddingNote}
+        title={title}
+        setTitle={setTitle}
       />
+      {selectedNote && (
+        <Editor
+          notes={notes}
+          setNotes={setNotes}
+          selectedNote={selectedNote}
+          setSelectedNote={setSelectedNote}
+          selectedNoteIndex={selectedNoteIndex}
+          setSelectedNoteIndex={setSelectedNoteIndex}
+          title={title}
+          setTitle={setTitle}
+          noteUpdate={noteUpdate}
+          id={id}
+          setId={setId}
+          text={text}
+          setText={setText}
+        />
+      )}
     </div>
   );
 };

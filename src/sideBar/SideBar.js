@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
 import SideBarItem from "../sideBarItem/SideBarItem";
 
-const SideBar = ({ notes, classes, selectedNoteIndex }) => {
-  const [addingNote, setAddingNote] = useState(false);
-  const [title, setTitle] = useState(null);
-
+const SideBar = ({
+  notes,
+  classes,
+  selectedNoteIndex,
+  selectNote,
+  deleteNote,
+  newNote,
+  title,
+  setTitle,
+  addingNote,
+  setAddingNote,
+}) => {
   const newNoteBtnClick = () => {
     setAddingNote(!addingNote);
     setTitle(null);
@@ -16,20 +24,6 @@ const SideBar = ({ notes, classes, selectedNoteIndex }) => {
 
   const updateTitle = (txt) => {
     setTitle(txt);
-  };
-
-  const newNote = () => {
-    console.log(addingNote, title);
-  };
-
-  const selectNote = (n, i) => {
-    console.log("Select Note");
-  };
-
-  const deleteNote = (e) => {
-    if (window.confirm(`Are you sure you want to delete: ${e.title}`)) {
-      console.log("Delete note");
-    }
   };
 
   if (notes) {

@@ -14,16 +14,6 @@ const SideBarItem = ({
   selectNote,
   deleteNote,
 }) => {
-  // const selectNote = (n, i) => {
-  //   selectNote(n, i);
-  // };
-
-  // const deleteNote = (note) => {
-  //   if (window.confirm(`Are you sure you want to delete: ${note.title}`)) {
-  //     deleteNote();
-  //   }
-  // };
-
   return (
     <div key={_index}>
       <ListItem
@@ -33,7 +23,7 @@ const SideBarItem = ({
       >
         <div
           className={classes.textSection}
-          onClick={selectNote(_note, _index)}
+          onClick={() => selectNote(_note, _index)}
         >
           <ListItemText
             primary={_note.title}
