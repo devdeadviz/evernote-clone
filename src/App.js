@@ -27,8 +27,15 @@ const App = () => {
 
   return (
     <div className="App">
-      <SideBar />
-      <Editor />
+      <SideBar notes={notes} selectedNoteIndex={selectedNoteIndex} />
+      <Editor
+        notes={notes}
+        setNotes={setNotes}
+        selectedNote={selectedNote}
+        setSelectedNote={setSelectedNote}
+        selectedNoteIndex={selectedNoteIndex}
+        setSelectedNoteIndex={setSelectedNoteIndex}
+      />
     </div>
   );
 };

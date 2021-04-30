@@ -6,10 +6,45 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { removeHTMLTags } from "../hooks/helpers";
 
-const SideBarItem = () => {
+const SideBarItem = ({
+  _index,
+  _note,
+  selectedNoteIndex,
+  classes,
+  selectNote,
+  deleteNote,
+}) => {
+  // const selectNote = (n, i) => {
+  //   selectNote(n, i);
+  // };
+
+  // const deleteNote = (note) => {
+  //   if (window.confirm(`Are you sure you want to delete: ${note.title}`)) {
+  //     deleteNote();
+  //   }
+  // };
+
   return (
-    <div>
-      <h1>Hello from side bar item.</h1>
+    <div key={_index}>
+      <ListItem
+        className={classes.listItem}
+        selected={selectedNoteIndex === _index}
+        alignItems="flex-start"
+      >
+        <div
+          className={classes.textSection}
+          onClick={selectNote(_note, _index)}
+        >
+          <ListItemText
+            primary={_note.title}
+            secondary={removeHTMLTags(_note.body.substring(0, 30)) + "..."}
+          ></ListItemText>
+        </div>
+        <DeleteIcon
+          className={classes.deleteIcon}
+          onClick={deleteNote(_note)}
+        ></DeleteIcon>
+      </ListItem>
     </div>
   );
 };
