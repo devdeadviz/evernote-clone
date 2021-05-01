@@ -35,6 +35,11 @@ const Editor = ({
     }, 1500)
   ).current;
 
+  const updateTitle = async (txt) => {
+    await setTitle(txt);
+    update();
+  };
+
   useEffect(() => {
     setText(selectedNote.body);
     setTitle(selectedNote.title);
@@ -43,6 +48,13 @@ const Editor = ({
 
   return (
     <div className={classes.editorContainer}>
+      <BorderColorIcon className={classes.editIcon}></BorderColorIcon>
+      <input
+        className={classes.titleInput}
+        placeholder="Note title..."
+        value={title ? title : ""}
+        onChange={(e) => updateTitle(e.target.value)}
+      ></input>
       <ReactQuill value={text} onChange={updateBody}></ReactQuill>
     </div>
   );
