@@ -86,7 +86,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app-container">
       <SideBar
         notes={notes}
         selectedNoteIndex={selectedNoteIndex}
