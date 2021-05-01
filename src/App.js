@@ -8,7 +8,7 @@ import { timestamp } from "./firebase/firebase";
 const App = () => {
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
   const [selectedNote, setSelectedNote] = useState(null);
-  const [notes, setNotes] = useState(null);
+  const [notes, setNotes] = useState([]);
   const [addingNote, setAddingNote] = useState(false);
   const [title, setTitle] = useState(null);
   const [text, setText] = useState(null);
@@ -23,7 +23,6 @@ const App = () => {
   // e -> note
   const deleteNote = async (e) => {
     if (window.confirm(`Are you sure you want to delete: ${e.title}`)) {
-      // console.log("Delete note");
       const noteIndex = notes.indexOf(e);
       await setNotes(notes.filter((_note) => _note !== e));
       if (selectedNoteIndex === noteIndex) {
@@ -50,10 +49,11 @@ const App = () => {
       timestamp: timestamp,
     });
     const newID = newFromDB.id;
-    await setNotes(...notes, note);
+    await setNotes([...notes, note]);
     const newNoteIndex = notes.indexOf(
       notes.filter((_note) => _note.id === newID[0])
     );
+    console.log("index", notes[newNoteIndex]);
     setSelectedNote(notes[newNoteIndex]);
     setSelectedNoteIndex(newNoteIndex);
     setTitle(null);
@@ -61,7 +61,6 @@ const App = () => {
   };
 
   const noteUpdate = (id, noteObj) => {
-    console.log(id, noteObj);
     if (id) {
       firebase.firestore().collection("notes").doc(id).update({
         title: noteObj.title,
@@ -81,10 +80,8 @@ const App = () => {
           data["id"] = _doc.id;
           return data;
         });
-        console.log(notes);
         setNotes(notes);
       });
-    return console.log("");
   }, []);
 
   return (

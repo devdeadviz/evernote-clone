@@ -23,14 +23,14 @@ const Editor = ({
 }) => {
   const updateBody = async (val) => {
     await setText(val);
-    update();
+    update(val);
   };
 
   const update = useRef(
-    debounce(() => {
+    debounce((text) => {
       noteUpdate(selectedNote.id, {
         title: selectedNote.title,
-        body: selectedNote.body,
+        body: text,
       });
     }, 1500)
   ).current;
@@ -44,7 +44,7 @@ const Editor = ({
     setText(selectedNote.body);
     setTitle(selectedNote.title);
     setId(selectedNote.id);
-  }, [selectedNote]);
+  }, [selectedNote, setId, setText, setTitle]);
 
   return (
     <div className={classes.editorContainer}>
@@ -55,7 +55,7 @@ const Editor = ({
         value={title ? title : ""}
         onChange={(e) => updateTitle(e.target.value)}
       ></input>
-      <ReactQuill value={text} onChange={updateBody}></ReactQuill>
+      <ReactQuill value={text} onChange={(e) => updateBody(e)}></ReactQuill>
     </div>
   );
 };
