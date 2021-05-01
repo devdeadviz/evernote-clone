@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import firebase from "./firebase/firebase";
 import SideBar from "./sideBar/SideBar";
 import Editor from "./editor/Editor";
+import { timestamp } from "./firebase/firebase";
 
 const App = () => {
   const [selectedNoteIndex, setSelectedNoteIndex] = useState(null);
@@ -32,6 +33,13 @@ const App = () => {
 
   const noteUpdate = (id, noteObj) => {
     console.log(id, noteObj);
+    if (id) {
+      firebase.firestore().collection("notes").doc(id).update({
+        title: noteObj.title,
+        body: noteObj.body,
+        timestamp: timestamp,
+      });
+    }
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import debounce from "../hooks/helpers";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
@@ -21,16 +21,19 @@ const Editor = ({
   text,
   setText,
 }) => {
-  const updateBody = () => {
-    setTimeout(
-      () =>
-        noteUpdate(id, {
-          title: selectedNote.title,
-          body: selectedNote.body,
-        }),
-      1500
-    );
+  const updateBody = async (val) => {
+    await setText(val);
+    update();
   };
+
+  const update = useRef(
+    debounce(() => {
+      noteUpdate(selectedNote.id, {
+        title: selectedNote.title,
+        body: selectedNote.body,
+      });
+    }, 1500)
+  ).current;
 
   useEffect(() => {
     setText(selectedNote.body);
