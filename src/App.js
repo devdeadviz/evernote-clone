@@ -15,9 +15,10 @@ const App = () => {
   const [id, setId] = useState(null);
 
   // n -> note, i -> index
-  const selectNote = (n, i) => {
-    setSelectedNote(n);
-    setSelectedNoteIndex(i);
+  const selectNote = (snote, sindex) => {
+    setSelectedNote(snote);
+    setSelectedNoteIndex(sindex);
+    console.log("App", selectedNote, selectedNoteIndex);
   };
 
   // e -> note

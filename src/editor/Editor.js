@@ -23,11 +23,13 @@ const Editor = ({
 }) => {
   const updateBody = async (val) => {
     await setText(val);
+    console.log("body", val);
     update(val);
   };
 
   const update = useRef(
     debounce((text) => {
+      console.log("ID", selectedNote.id);
       noteUpdate(selectedNote.id, {
         title: selectedNote.title,
         body: text,
@@ -53,7 +55,7 @@ const Editor = ({
         className={classes.titleInput}
         placeholder="Note title..."
         value={title ? title : ""}
-        onChange={(e) => updateTitle(e.target.value)}
+        onChange={(e) => updateTitle(e)}
       ></input>
       <ReactQuill value={text} onChange={(e) => updateBody(e)}></ReactQuill>
     </div>
