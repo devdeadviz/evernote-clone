@@ -4,26 +4,36 @@ import styles from "./styles";
 import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
 import SideBarItem from "../sideBarItem/SideBarItem";
+import firebase from "../firebase/firebase";
+import { timestamp } from "../firebase/firebase";
 
 const SideBar = ({
   notes,
   classes,
-  selectedNoteIndex,
   selectNote,
   deleteNote,
-  newNote,
   title,
   setTitle,
   addingNote,
   setAddingNote,
+  body,
 }) => {
   const newNoteBtnClick = () => {
     setAddingNote(!addingNote);
-    setTitle(null);
+    setTitle("");
   };
+  const createNewNote = async () => {
+    await firebase
+      .firestore()
+      .collection("notes")
+      .add({
+        title: title,
+        body: body || "",
+        timestamp: timestamp,
+      });
 
-  const updateTitle = (txt) => {
-    setTitle(txt);
+    setTitle("");
+    setAddingNote(false);
   };
 
   if (notes) {
@@ -37,26 +47,24 @@ const SideBar = ({
             <input
               type="text"
               placeholder="Enter note title"
-              onKeyUp={(e) => updateTitle(e.target.value)}
+              onKeyUp={(e) => setTitle(e.target.value)}
             />
             <Button
               className={classes.newNoteSubmitBtn}
-              onClick={() => newNote(title)}
+              onClick={() => createNewNote(title, body)}
             >
               Submit Note
             </Button>
           </div>
         ) : null}
         <List>
-          {notes.map((_note, _index) => {
+          {notes.map((_note) => {
             return (
-              <div key={_index}>
+              <div key={_note.id}>
                 <SideBarItem
                   _note={_note}
-                  _index={_index}
-                  selectedNoteIndex={selectedNoteIndex}
-                  selectNote={selectNote}
-                  deleteNote={deleteNote}
+                  selectNote={() => selectNote(_note.id)}
+                  deleteNote={() => deleteNote(_note.id)}
                 />
                 <Divider></Divider>
               </div>

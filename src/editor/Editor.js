@@ -1,52 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import debounce from "../hooks/helpers";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 
-const Editor = ({
-  classes,
-  notes,
-  setNotes,
-  selectedNote,
-  setSelectedNote,
-  selectedNoteIndex,
-  setSelectedNoteIndex,
-  title,
-  setTitle,
-  noteUpdate,
-  id,
-  setId,
-  text,
-  setText,
-}) => {
-  const updateBody = async (val) => {
-    await setText(val);
-    console.log("body", val);
-    update(val);
-  };
+const Editor = ({ classes, selectedNote, noteUpdate }) => {
+  const [updateBody, setUpdateBody] = React.useState(selectedNote?.body);
+  const [updateTitle, setUpdateTitle] = React.useState(selectedNote?.title);
 
-  const update = useRef(
-    debounce((text) => {
-      console.log("ID", selectedNote.id);
-      noteUpdate(selectedNote.id, {
-        title: selectedNote.title,
-        body: text,
-      });
-    }, 1500)
-  ).current;
+  React.useEffect(() => {
+    setUpdateTitle(selectedNote?.title);
+    setUpdateBody(selectedNote?.body);
+  }, [selectedNote]);
 
-  const updateTitle = async (txt) => {
-    await setTitle(txt);
-    update();
-  };
+  // console.log("updatedText", updateBody);
+  // console.log("updatedTitle", updateTitle);
 
-  useEffect(() => {
-    setText(selectedNote.body);
-    setTitle(selectedNote.title);
-    setId(selectedNote.id);
-  }, [selectedNote, setId, setText, setTitle]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const update = React.useCallback(
+    debounce(() => {
+      noteUpdate(selectedNote.id, updateTitle, updateBody);
+    }, 1500),
+    [updateBody, updateTitle]
+  );
 
   return (
     <div className={classes.editorContainer}>
@@ -54,10 +31,19 @@ const Editor = ({
       <input
         className={classes.titleInput}
         placeholder="Note title..."
-        value={title ? title : ""}
-        onChange={(e) => updateTitle(e)}
+        value={updateTitle ? updateTitle : ""}
+        onChange={(e) => {
+          setUpdateTitle(e.target.value);
+          update();
+        }}
       ></input>
-      <ReactQuill value={text} onChange={(e) => updateBody(e)}></ReactQuill>
+      <ReactQuill
+        value={updateBody}
+        onChange={(value) => {
+          setUpdateBody(value);
+          update();
+        }}
+      ></ReactQuill>
     </div>
   );
 };
